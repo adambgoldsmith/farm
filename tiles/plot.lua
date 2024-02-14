@@ -5,6 +5,9 @@ plot = {
     is_tilled = false,
     is_seeded = false,
     is_watered = false,
+    is_grown = false,
+    is_dead = false,
+    death_chance = 0.1,
     growth = 0,
     seed = nil,
 }
@@ -30,7 +33,7 @@ function plot:draw()
     end
     if self.is_seeded then
         love.graphics.setColor(255, 255, 255)
-        love.graphics.print(self.seed.produce, self.x, self.y)
+        love.graphics.print(self.seed.name, self.x, self.y)
         love.graphics.setColor(0, 255, 0)
         love.graphics.print(tostring(self.growth), self.x, self.y + 16)
     end
@@ -47,6 +50,7 @@ end
 
 function plot:water()
     self.is_watered = true
+    self.death_chance = self.death_chance / 2
 end
 
 function plot:grow()
@@ -63,9 +67,9 @@ function plot:harvest()
         self.growth = 0
         produce = self.seed.produce
         self.seed = nil
-        return produce
+        return produce:new()
     end
-    return nil
+    return "nothing"
 end
 
 return plot

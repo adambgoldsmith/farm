@@ -2,15 +2,16 @@ item = {}
 
 function item:new(o, name, type)
     o = o or {}
+    o.name = name
+    o.type = type
+    o.sprite = love.graphics.newImage("res/missing_texture.png")
     setmetatable(o, self)
     self.__index = self
-    self.name = name
-    self.type = type
     return o
 end
 
 function item:draw()
-    love.graphics.print(self.name, self.x, self.y)
+    love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 function item:drop(x, y)
