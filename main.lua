@@ -10,15 +10,12 @@ function love.load()
     carrot_seed = require("items.carrot_seed")
     tomato_seed = require("items.tomato_seed")
     cabbage_seed = require("items.cabbage_seed")
-    carrot = require("items.carrot")
     tomato = require("items.tomato")
     cabbage = require("items.cabbage")
 
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
-        carrot:new(nil, 256+32, 256+32),
-        tomato:new(nil, 256+64, 256+64),
-        cabbage:new(nil, 256+96, 256+96),
+        cabbage_seed:new(nil, 288, 256),
     }
 
     Player = player:new()
@@ -65,6 +62,9 @@ function love.update(dt)
                 end
             elseif  Player.held_item == "nothing" then
                 if Plot.is_seeded then
+                    -- this should only happen if the growth time has passed
+                    -- it should only ever return a table that is a produce
+                    -- currently returns "nothing"
                     local harvested_item = Plot:harvest()
                     Player:add_item(harvested_item)
                 end

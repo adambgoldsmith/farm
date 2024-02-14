@@ -10,7 +10,7 @@ player = {
 
 function player:new(o)
     o = o or {}
-    self.held_item = self.inventory[1]
+    o.held_item = self.inventory[1]
     setmetatable(o, self)
     self.__index = self
     return o

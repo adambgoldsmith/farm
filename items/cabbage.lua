@@ -3,12 +3,12 @@ item = require("items.item")
 cabbage = item:new()
 
 function cabbage:new(o, x, y)
-    o = o or {}
-    self.x = x
-    self.y = y
-    self.name = "cabbage"
-    self.type = "produce"
-    self.sprite = love.graphics.newImage("res/cabbage.png")
+    o = o or item:new(o, x, y)
+    o.x = x
+    o.y = y
+    o.name = "cabbage"
+    o.type = "produce"
+    o.sprite = love.graphics.newImage("res/cabbage.png")
     setmetatable(o, self)
     self.__index = self
     return o

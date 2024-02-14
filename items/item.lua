@@ -2,11 +2,11 @@ item = {}
 
 function item:new(o, name, type)
     o = o or {}
+    o.name = name
+    o.type = type
+    o.sprite = love.graphics.newImage("res/missing_texture.png")
     setmetatable(o, self)
     self.__index = self
-    self.name = name
-    self.type = type
-    self.sprite = love.graphics.newImage("res/missing_texture.png")
     return o
 end
 
