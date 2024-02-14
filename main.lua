@@ -23,12 +23,6 @@ function love.load()
 end
 
 function love.draw()
-    if type(Player.held_item) == "table" then
-        love.graphics.print(Player.held_item.name, 256, 0)
-    else
-        love.graphics.print(tostring(Player.held_item), 256, 0)
-    end
-    
     Player:draw()
     Plot:draw()
 

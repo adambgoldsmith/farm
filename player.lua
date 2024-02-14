@@ -18,6 +18,8 @@ end
 
 function player:draw()
     love.graphics.rectangle("fill", self.x, self.y, 32, 32)
+
+    self:display_inventory()
 end
 
 function player:move(dt)
@@ -53,6 +55,21 @@ function player:check_ground_item(item)
         return true
     end
     return false
+end
+
+function player:display_inventory()
+    for i = 1, self.inventory_size do
+        if i == self.held_item_index then
+            love.graphics.rectangle("fill", 256 + (i - 1) * 32, 32, 32, 32)
+        else
+            love.graphics.rectangle("line", 256 + (i - 1) * 32, 32, 32, 32)
+        end
+        if type(Player.inventory[i]) == "table" then
+            love.graphics.print(Player.inventory[i].name, 256 + (i - 1) * 32, 32)
+        else
+            love.graphics.print(Player.inventory[i], 256 + (i - 1) * 32, 32)
+        end
+    end
 end
 
 function player:add_item(item)
