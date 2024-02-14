@@ -23,16 +23,16 @@ function player:draw()
 end
 
 function player:move(dt)
-    if love.keyboard.isDown("up") then
+    if love.keyboard.isDown("w") then
         self.y = self.y - self.speed * dt
     end
-    if love.keyboard.isDown("down") then
+    if love.keyboard.isDown("s") then
         self.y = self.y + self.speed * dt
     end
-    if love.keyboard.isDown("left") then
+    if love.keyboard.isDown("a") then
         self.x = self.x - self.speed * dt
     end
-    if love.keyboard.isDown("right") then
+    if love.keyboard.isDown("d") then
         self.x = self.x + self.speed * dt
     end
 end

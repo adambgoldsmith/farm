@@ -23,6 +23,8 @@ function love.load()
 end
 
 function love.draw()
+    love.graphics.setBackgroundColor(0, 0.7, 0.9)
+
     Player:draw()
     Plot:draw()
 
