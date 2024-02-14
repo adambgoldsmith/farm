@@ -2,14 +2,15 @@ player = {
     x = 0,
     y = 0,
     speed = 100,
+    inventory_size = 5,
+    inventory = {"nothing", "nothing", "nothing", "nothing", "nothing"},
     held_item = nil,
     held_item_index = 1,
-    inventory_size = 5,
-    inventory = {nil, nil, nil, nil, nil},
 }
 
 function player:new(o)
     o = o or {}
+    self.held_item = self.inventory[1]
     setmetatable(o, self)
     self.__index = self
     return o
@@ -55,9 +56,13 @@ function player:check_ground_item(item)
 end
 
 function player:add_item(item)
-    if #self.inventory < self.inventory_size then
-        table.insert(self.inventory, item)
+    for i = 1, self.inventory_size do
+        if self.inventory[i] == "nothing" then
+            self.inventory[i] = item
+            return true
+        end
     end
+    return false
 end
 
 function player:drop_item()
