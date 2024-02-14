@@ -12,11 +12,13 @@ function love.load()
     cabbage_seed = require("items.cabbage_seed")
     carrot = require("items.carrot")
     tomato = require("items.tomato")
+    cabbage = require("items.cabbage")
 
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
         carrot:new(nil, 256+32, 256+32),
-        tomato:new(nil, 256+64, 256+64)
+        tomato:new(nil, 256+64, 256+64),
+        cabbage:new(nil, 256+96, 256+96),
     }
 
     Player = player:new()
@@ -33,7 +35,7 @@ function love.draw()
 
     Player:draw()
     Plot:draw()
-    Water:draw()
+    -- Water:draw()
 
     for i, item in ipairs(ground_items) do
         item:draw()
