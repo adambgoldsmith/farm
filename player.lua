@@ -5,10 +5,7 @@ player = {
     held_item = nil,
     held_item_index = 1,
     inventory_size = 5,
-    inventory = {
-        "hoe",
-        "watering can",
-    },
+    inventory = {nil, nil, nil, nil, nil},
 }
 
 function player:new(o)
