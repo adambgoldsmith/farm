@@ -8,6 +8,7 @@ function watering_can:new(o, x, y)
     self.y = y
     self.name = "watering can"
     self.type = "tool"
+    self.sprite = love.graphics.newImage("res/watering_can.png")
     setmetatable(o, self)
     self.__index = self
     return o

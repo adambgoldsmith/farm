@@ -5,6 +5,9 @@ plot = {
     is_tilled = false,
     is_seeded = false,
     is_watered = false,
+    is_grown = false,
+    is_dead = false,
+    death_chance = 0.1,
     growth = 0,
     seed = nil,
 }
@@ -47,6 +50,7 @@ end
 
 function plot:water()
     self.is_watered = true
+    self.death_chance = self.death_chance / 2
 end
 
 function plot:grow()

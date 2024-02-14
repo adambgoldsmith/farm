@@ -8,6 +8,7 @@ function hoe:new(o, x, y)
     self.y = y
     self.name = "hoe"
     self.type = "tool"
+    self.sprite = love.graphics.newImage("res/hoe.png")
     setmetatable(o, self)
     self.__index = self
     return o

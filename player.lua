@@ -37,6 +37,7 @@ function player:move(dt)
     end
 end
 
+-- combine with check_ground_item
 function player:check_tile(tile)
     if self.x < tile.x + 32 and
         self.x + 32 > tile.x and
@@ -45,6 +46,25 @@ function player:check_tile(tile)
         return true
     end
     return false
+end
+
+function player:tile_collision(tile)
+    local xOverlap = math.max(0, math.min(self.x + 32, tile.x + 32) - math.max(self.x, tile.x))
+    local yOverlap = math.max(0, math.min(self.y + 32, tile.y + 32) - math.max(self.y, tile.y))
+
+    if xOverlap > yOverlap then
+        if self.y < tile.y then
+            self.y = self.y - yOverlap
+        else
+            self.y = self.y + yOverlap
+        end
+    else
+        if self.x < tile.x then
+            self.x = self.x - xOverlap
+        else
+            self.x = self.x + xOverlap
+        end
+    end 
 end
 
 function player:check_ground_item(item)
@@ -65,7 +85,7 @@ function player:display_inventory()
             love.graphics.rectangle("line", 256 + (i - 1) * 32, 32, 32, 32)
         end
         if type(Player.inventory[i]) == "table" then
-            love.graphics.print(Player.inventory[i].name, 256 + (i - 1) * 32, 32)
+            love.graphics.draw(Player.inventory[i].sprite, 256 + (i - 1) * 32, 32)
         else
             love.graphics.print(Player.inventory[i], 256 + (i - 1) * 32, 32)
         end

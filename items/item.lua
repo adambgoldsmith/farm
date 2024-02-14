@@ -6,11 +6,12 @@ function item:new(o, name, type)
     self.__index = self
     self.name = name
     self.type = type
+    self.sprite = love.graphics.newImage("res/missing_texture.png")
     return o
 end
 
 function item:draw()
-    love.graphics.print(self.name, self.x, self.y)
+    love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 function item:drop(x, y)

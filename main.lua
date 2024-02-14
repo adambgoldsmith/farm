@@ -4,14 +4,19 @@
 function love.load()
     player = require("player")
     plot = require("tiles.plot")
+    water = require("tiles.water")
     hoe = require("items.hoe")
     watering_can = require("items.watering_can")
     carrot_seed = require("items.carrot_seed")
     tomato_seed = require("items.tomato_seed")
     cabbage_seed = require("items.cabbage_seed")
+    carrot = require("items.carrot")
+    tomato = require("items.tomato")
 
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
+        carrot:new(nil, 256+32, 256+32),
+        tomato:new(nil, 256+64, 256+64)
     }
 
     Player = player:new()
@@ -20,6 +25,7 @@ function love.load()
     Player:add_item(carrot_seed:new())
     Player:add_item(tomato_seed:new())
     Plot = plot:new(nil, 64, 64)
+    Water = water:new(nil, 96, 96)
 end
 
 function love.draw()
@@ -27,6 +33,7 @@ function love.draw()
 
     Player:draw()
     Plot:draw()
+    Water:draw()
 
     for i, item in ipairs(ground_items) do
         item:draw()
@@ -40,6 +47,7 @@ function love.update(dt)
 
     Player:move(dt)
     Player:select_item()
+    Player:tile_collision(Water)
 
     if Player:check_tile(Plot) then
         if Player:use_item() then
