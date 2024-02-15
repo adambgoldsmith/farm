@@ -5,6 +5,9 @@ function love.load()
     camera = require("libraries.camera")
     cam = camera()
 
+    hotbar = require("ui.hotbar")
+    Hotbar = hotbar:new(nil, 0, 0)
+
     player = require("entities.player")
     plot = require("tiles.plot")
     water = require("tiles.water")
@@ -37,12 +40,10 @@ end
 function love.draw()
     cam:attach()
 
-        love.graphics.setBackgroundColor(0, 0.7, 0.9)
-
-        Player:draw()
+        love.graphics.setBackgroundColor(0.1, 0.6, 0.1)
         
         Plot:draw()
-        -- Water:draw()
+        Water:draw()
 
         Fence:draw()
 
@@ -51,6 +52,10 @@ function love.draw()
         for i, item in ipairs(ground_items) do
             item:draw()
         end
+
+        Player:draw()
+
+        Hotbar:draw(Player)
 
     cam:detach()
 end
@@ -114,6 +119,8 @@ function love.update(dt)
         Player.held_item = "nothing"
         Player.inventory[Player.held_item_index] = "nothing"
     end
+
+    Hotbar:attach_to_player(Player)
 
     cam:lookAt(Player.x, Player.y)
 end

@@ -1,7 +1,13 @@
 plot = {
     x = 0,
     y = 0,
-    type = "plot",
+    name = "plot",
+    type = "tile",
+    sprite = {
+        plot = love.graphics.newImage("res/missing_texture.png"),
+        plot_tilled = love.graphics.newImage("res/missing_texture.png"),
+        plot_water = love.graphics.newImage("res/missing_texture.png"),
+    },
     is_tilled = false,
     is_seeded = false,
     is_watered = false,
@@ -16,26 +22,27 @@ function plot:new(o, x, y)
     o = o or {}
     o.x = x or 0
     o.y = y or 0
+    o.sprite = {
+        plot = love.graphics.newImage("res/plot.png"),
+        plot_tilled = love.graphics.newImage("res/plot_tilled.png"),
+        plot_water = love.graphics.newImage("res/plot_water.png"),
+    }
     setmetatable(o, self)
     self.__index = self
     return o
 end
 
 function plot:draw()
-    love.graphics.rectangle("line", self.x, self.y, 32, 32)
-    if self.is_tilled then
-        love.graphics.setColor(139, 69, 19)
-        love.graphics.rectangle("fill", self.x, self.y, 32, 32)
+    if not self.is_tilled then
+        love.graphics.draw(self.sprite.plot, self.x, self.y)
+    else
+        love.graphics.draw(self.sprite.plot_tilled, self.x, self.y)
     end
     if self.is_watered then
-        love.graphics.setColor(0, 0, 255)
-        love.graphics.rectangle("fill", self.x, self.y, 32, 32)
+        love.graphics.draw(self.sprite.plot_water, self.x, self.y)
     end
     if self.is_seeded then
-        love.graphics.setColor(255, 255, 255)
-        love.graphics.print(self.seed.name, self.x, self.y)
-        love.graphics.setColor(0, 255, 0)
-        love.graphics.print(tostring(self.growth), self.x, self.y + 16)
+        love.graphics.draw(self.seed.sprite, self.x, self.y)
     end
 end
 
