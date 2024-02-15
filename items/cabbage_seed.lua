@@ -9,6 +9,7 @@ function cabbage_seed:new(o, x, y)
     o.y = y
     o.name = "cabbage seed"
     o.type = "seed"
+    o.sprite = love.graphics.newImage("res/cabbage_seed.png")
     o.growth_time = 20
     o.produce = cabbage
     setmetatable(o, self)
