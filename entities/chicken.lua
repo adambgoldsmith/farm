@@ -9,7 +9,7 @@ function chicken:new(o, x, y)
     o.y = y
     o.name = "chicken"
     o.type = "animal"
-    o.sprite = love.graphics.newImage("res/chicken_white.png")
+    o.sprite = math.random(1, 2) == 1 and love.graphics.newImage("res/chicken_white.png") or love.graphics.newImage("res/chicken_brown.png")
     o.speed = 25
     o.direction = 2
     o.produce = egg
@@ -25,6 +25,7 @@ function chicken:draw()
     else
         flip = 1
     end
+    self.sprite:setFilter("nearest", "nearest")
     love.graphics.draw(self.sprite, self.x, self.y, 0, flip, 1, 16, 16)
 end
 

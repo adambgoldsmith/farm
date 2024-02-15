@@ -8,7 +8,9 @@ function player:new(o, x, y)
     o.y = y
     o.name = "player"
     o.type = "player"
+    o.sprite = love.graphics.newImage("res/char_32x32.png")
     o.speed = 150
+    o.direction = 1
     o.inventory_size = 5
     o.inventory = {"nothing", "nothing", "nothing", "nothing", "nothing"}
     o.held_item = nil
@@ -19,7 +21,12 @@ function player:new(o, x, y)
 end
 
 function player:draw()
-    love.graphics.rectangle("fill", self.x, self.y, 32, 32)
+    self.sprite:setFilter("nearest", "nearest")
+    if self.direction == 1 then
+        love.graphics.draw(self.sprite, self.x, self.y, 0, 2, 2, 0, 0)
+    else
+        love.graphics.draw(self.sprite, self.x + 32, self.y, 0, -2, 2, 0, 0)
+    end
 end
 
 function player:move(dt)
@@ -31,9 +38,11 @@ function player:move(dt)
     end
     if love.keyboard.isDown("a") then
         self.x = self.x - self.speed * dt
+        self.direction = -1
     end
     if love.keyboard.isDown("d") then
         self.x = self.x + self.speed * dt
+        self.direction = 1
     end
 end
 
