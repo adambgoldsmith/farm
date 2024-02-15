@@ -19,6 +19,7 @@ function chest:new(o, x, y)
 end
 
 function chest:draw()
+    self.sprite:setFilter("nearest", "nearest")
     love.graphics.draw(self.sprite, self.x, self.y)
 end
 

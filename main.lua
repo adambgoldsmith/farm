@@ -8,6 +8,13 @@ function love.load()
     hotbar = require("ui.hotbar")
     Hotbar = hotbar:new(nil, 0, 0)
 
+    status = require("ui.status")
+    Status = status:new(nil, 0, 0)
+
+    island_generator = require("island_generator")
+    Island = island_generator:new()
+    Island:generate()
+
     player = require("entities.player")
     plot = require("tiles.plot")
     water = require("tiles.water")
@@ -21,6 +28,7 @@ function love.load()
     chicken = require("entities.chicken")
     fence = require("fence")
     house = require("house")
+    chest = require("chest")
 
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
@@ -37,17 +45,22 @@ function love.load()
     Chicken = chicken:new(nil, 128, 128)
     Fence = fence:new(nil, 192, 192)
     House = house:new(nil, 512, 64)
+    Chest = chest:new(nil, 256 + 64, 192)
 end
 
 function love.draw()
     cam:attach()
 
         love.graphics.setBackgroundColor(0.1, 0.6, 0.1)
+
+        Island:draw()
         
         Plot:draw()
         Water:draw()
 
         House:draw()
+
+        Chest:draw()
 
         Fence:draw()
 
@@ -60,6 +73,7 @@ function love.draw()
         Player:draw()
 
         Hotbar:draw(Player)
+        Status:draw(Player)
 
     cam:detach()
 end
@@ -127,6 +141,7 @@ function love.update(dt)
     end
 
     Hotbar:attach_to_player(Player)
+    Status:attach_to_player(Player)
 
     cam:lookAt(Player.x, Player.y)
 end

@@ -2,8 +2,8 @@ plot = require("tiles.plot")
 water = require("tiles.water")
 
 island_generator = {
-    island_size_x = 10,
-    island_size_y = 10,
+    island_size_x = 16,
+    island_size_y = 16,
     island = {},
 }
 
@@ -18,12 +18,12 @@ function island_generator:generate()
     for i = 1, self.island_size_x do
         self.island[i] = {}
         for j = 1, self.island_size_y do
-            self.island[i][j] = plot:new(nil, i * 32, j * 32)
+            if i == 1 or i == self.island_size_x or j == 1 or j == self.island_size_y then
+                self.island[i][j] = water:new(nil, (i - 1) * 32, (j - 1) * 32)
+            else
+                self.island[i][j] = plot:new(nil, (i - 1) * 32, (j - 1) * 32)
+            end
         end
-    end
-    for i = 1, self.island_size_x do
-        self.island[i][1] = water:new(nil, i * 32, 0)
-        self.island[i][self.island_size_y] = water:new(nil, i * 32, self.island_size_y * 32)
     end
 end
 

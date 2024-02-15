@@ -15,6 +15,7 @@ function player:new(o, x, y)
     o.inventory = {"nothing", "nothing", "nothing", "nothing", "nothing"}
     o.held_item = nil
     o.held_item_index = 1
+    o.money = 0
     setmetatable(o, self)
     self.__index = self
     return o
@@ -106,6 +107,10 @@ function player:use_item()
         return true
     end
     return false
+end
+
+function player:money_change(amount)
+    self.money = self.money + amount
 end
 
 return player
