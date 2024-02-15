@@ -1,33 +1,36 @@
+entity = require("entities.entity")
 egg = require("items.egg")
 
-chicken = {
-    x = 0,
-    y = 0,
-    name = "chicken",
-    type = "animal",
-    sprite = love.graphics.newImage("res/missing_texture.png"),
-    speed = 25,
-    direction = 2,
-    produce = egg
-}
+chicken = entity:new()
 
 function chicken:new(o, x, y)
-    o = o or {}
+    o = o or entity:new(o, x, y)
     o.x = x
     o.y = y
+    o.name = "chicken"
+    o.type = "animal"
     o.sprite = love.graphics.newImage("res/chicken_white.png")
+    o.speed = 25
+    o.direction = 2
+    o.produce = egg
     setmetatable(o, self)
     self.__index = self
     return o
 end
 
 function chicken:draw()
-    love.graphics.draw(self.sprite, self.x, self.y)
+    local flip = 1
+    if self.direction == 3 or self.direction == 5 or self.direction == 7  or self.direction == 9 or self.direction == 11 then
+        flip = -1
+    else
+        flip = 1
+    end
+    love.graphics.draw(self.sprite, self.x, self.y, 0, flip, 1, 16, 16)
 end
 
 function chicken:move(dt)
-    if love.timer.getTime() % (math.random(3, 8)) < dt then
-        self.direction = math.random(1, 11)
+    if love.timer.getTime() % (math.random(3, 3)) < dt then
+        self.direction = math.random(1, 12)
     end
     if self.direction == 1 then
         self.y = self.y - self.speed * dt

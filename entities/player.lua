@@ -1,16 +1,18 @@
-player = {
-    x = 0,
-    y = 0,
-    speed = 150,
-    inventory_size = 5,
-    inventory = {"nothing", "nothing", "nothing", "nothing", "nothing"},
-    held_item = nil,
-    held_item_index = 1,
-}
+entity = require("entities.entity")
 
-function player:new(o)
-    o = o or {}
-    o.held_item = self.inventory[1]
+player = entity:new()
+
+function player:new(o, x, y)
+    o = o or entity:new(o, x, y)
+    o.x = x
+    o.y = y
+    o.name = "player"
+    o.type = "player"
+    o.speed = 150
+    o.inventory_size = 5
+    o.inventory = {"nothing", "nothing", "nothing", "nothing", "nothing"}
+    o.held_item = nil
+    o.held_item_index = 1
     setmetatable(o, self)
     self.__index = self
     return o
@@ -35,36 +37,6 @@ function player:move(dt)
     if love.keyboard.isDown("d") then
         self.x = self.x + self.speed * dt
     end
-end
-
--- combine with check_ground_item
-function player:check_tile(tile)
-    if self.x < tile.x + 32 and
-        self.x + 32 > tile.x and
-        self.y < tile.y + 32 and
-        self.y + 32 > tile.y then
-        return true
-    end
-    return false
-end
-
-function player:tile_collision(tile)
-    local xOverlap = math.max(0, math.min(self.x + 32, tile.x + 32) - math.max(self.x, tile.x))
-    local yOverlap = math.max(0, math.min(self.y + 32, tile.y + 32) - math.max(self.y, tile.y))
-
-    if xOverlap > yOverlap then
-        if self.y < tile.y then
-            self.y = self.y - yOverlap
-        else
-            self.y = self.y + yOverlap
-        end
-    else
-        if self.x < tile.x then
-            self.x = self.x - xOverlap
-        else
-            self.x = self.x + xOverlap
-        end
-    end 
 end
 
 function player:check_ground_item(item)
@@ -107,6 +79,11 @@ function player:drop_item()
         return true
     end
     return false
+end
+
+function player:delete_item()
+    self.inventory[self.held_item_index] = "nothing"
+    self.held_item = "nothing"
 end
 
 function player:select_item()

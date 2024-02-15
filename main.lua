@@ -2,7 +2,7 @@
 -- 2024-02-13
 
 function love.load()
-    player = require("player")
+    player = require("entities.player")
     plot = require("tiles.plot")
     water = require("tiles.water")
     hoe = require("items.hoe")
@@ -12,7 +12,8 @@ function love.load()
     cabbage_seed = require("items.cabbage_seed")
     tomato = require("items.tomato")
     cabbage = require("items.cabbage")
-    chicken = require("chicken")
+    chicken = require("entities.chicken")
+    fence = require("fence")
 
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
@@ -27,6 +28,7 @@ function love.load()
     Plot = plot:new(nil, 64, 64)
     Water = water:new(nil, 96, 96)
     Chicken = chicken:new(nil, 128, 128)
+    Fence = fence:new(nil, 192, 192)
 end
 
 function love.draw()
@@ -36,6 +38,8 @@ function love.draw()
     
     Plot:draw()
     -- Water:draw()
+
+    Fence:draw()
 
     Chicken:draw()
 
@@ -54,10 +58,12 @@ function love.update(dt)
     Player:tile_collision(Water)
 
     Chicken:move(dt)
+    Chicken:tile_collision(Water)
     if Chicken:lay_egg(dt) then
         local egg = Chicken.produce:new(nil, Chicken.x, Chicken.y)
         table.insert(ground_items, egg)
     end
+
 
     if Player:check_tile(Plot) then
         if Player:use_item() then
@@ -67,6 +73,7 @@ function love.update(dt)
                 end
                 if Player.held_item.type == "seed" and Plot.is_tilled and not Plot.is_seeded then
                     Plot:plant_seed(Player.held_item)
+                    Player:delete_item()
                 end
                 if Player.held_item.name == "watering can" and Plot.is_tilled then
                     Plot:water()
