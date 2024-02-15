@@ -12,6 +12,7 @@ function love.load()
     cabbage_seed = require("items.cabbage_seed")
     tomato = require("items.tomato")
     cabbage = require("items.cabbage")
+    chicken = require("chicken")
 
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
@@ -25,14 +26,18 @@ function love.load()
     Player:add_item(tomato_seed:new())
     Plot = plot:new(nil, 64, 64)
     Water = water:new(nil, 96, 96)
+    Chicken = chicken:new(nil, 128, 128)
 end
 
 function love.draw()
     love.graphics.setBackgroundColor(0, 0.7, 0.9)
 
     Player:draw()
+    
     Plot:draw()
     -- Water:draw()
+
+    Chicken:draw()
 
     for i, item in ipairs(ground_items) do
         item:draw()
@@ -47,6 +52,12 @@ function love.update(dt)
     Player:move(dt)
     Player:select_item()
     Player:tile_collision(Water)
+
+    Chicken:move(dt)
+    if Chicken:lay_egg(dt) then
+        local egg = Chicken.produce:new(nil, Chicken.x, Chicken.y)
+        table.insert(ground_items, egg)
+    end
 
     if Player:check_tile(Plot) then
         if Player:use_item() then

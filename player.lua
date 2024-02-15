@@ -1,7 +1,7 @@
 player = {
     x = 0,
     y = 0,
-    speed = 100,
+    speed = 150,
     inventory_size = 5,
     inventory = {"nothing", "nothing", "nothing", "nothing", "nothing"},
     held_item = nil,
