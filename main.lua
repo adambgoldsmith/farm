@@ -2,6 +2,9 @@
 -- 2024-02-13
 
 function love.load()
+    camera = require("libraries.camera")
+    cam = camera()
+
     player = require("entities.player")
     plot = require("tiles.plot")
     water = require("tiles.water")
@@ -32,20 +35,24 @@ function love.load()
 end
 
 function love.draw()
-    love.graphics.setBackgroundColor(0, 0.7, 0.9)
+    cam:attach()
 
-    Player:draw()
-    
-    Plot:draw()
-    -- Water:draw()
+        love.graphics.setBackgroundColor(0, 0.7, 0.9)
 
-    Fence:draw()
+        Player:draw()
+        
+        Plot:draw()
+        -- Water:draw()
 
-    Chicken:draw()
+        Fence:draw()
 
-    for i, item in ipairs(ground_items) do
-        item:draw()
-    end
+        Chicken:draw()
+
+        for i, item in ipairs(ground_items) do
+            item:draw()
+        end
+
+    cam:detach()
 end
 
 function love.update(dt)
@@ -107,4 +114,6 @@ function love.update(dt)
         Player.held_item = "nothing"
         Player.inventory[Player.held_item_index] = "nothing"
     end
+
+    cam:lookAt(Player.x, Player.y)
 end
