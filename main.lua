@@ -20,6 +20,7 @@ function love.load()
     cabbage = require("items.cabbage")
     chicken = require("entities.chicken")
     fence = require("fence")
+    house = require("house")
 
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
@@ -35,6 +36,7 @@ function love.load()
     Water = water:new(nil, 96, 96)
     Chicken = chicken:new(nil, 128, 128)
     Fence = fence:new(nil, 192, 192)
+    House = house:new(nil, 512, 64)
 end
 
 function love.draw()
@@ -44,6 +46,8 @@ function love.draw()
         
         Plot:draw()
         Water:draw()
+
+        House:draw()
 
         Fence:draw()
 
@@ -103,6 +107,8 @@ function love.update(dt)
     end
 
     for i, item in ipairs(ground_items) do
+        item:float()
+
         if Player:check_ground_item(item) then
             if Player:use_item() then
                 local res = Player:add_item(item)

@@ -14,6 +14,11 @@ function item:draw()
     love.graphics.draw(self.sprite, self.x, self.y)
 end
 
+function item:float()
+    
+    self.y = self.y + math.sin(love.timer.getTime() * 2) * 0.1
+end
+
 function item:drop(x, y)
     self.x = x
     self.y = y
