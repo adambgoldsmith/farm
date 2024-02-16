@@ -51,7 +51,7 @@ end
 function love.draw()
     cam:attach()
 
-        love.graphics.setBackgroundColor(0.1, 0.6, 0.1)
+        love.graphics.setBackgroundColor(0, 0.6, 0.86)
 
         Island:draw()
         
