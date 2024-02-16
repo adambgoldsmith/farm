@@ -35,7 +35,7 @@ function love.load()
         cabbage_seed:new(nil, 288, 256),
     }
 
-    Player = player:new()
+    Player = player:new(nil, 128, 128)
     Player:add_item(hoe:new())
     Player:add_item(watering_can:new())
     Player:add_item(carrot_seed:new())
@@ -44,7 +44,7 @@ function love.load()
     Water = water:new(nil, 96, 96)
     Chicken = chicken:new(nil, 128, 128)
     Fence = fence:new(nil, 192, 192)
-    House = house:new(nil, 512, 64)
+    House = house:new(nil, 256 + 96, 64)
     Chest = chest:new(nil, 256 + 64, 192)
 end
 
@@ -85,10 +85,16 @@ function love.update(dt)
 
     Player:move(dt)
     Player:select_item()
-    Player:tile_collision(Water)
+    for i, tile in ipairs(Island.island) do
+        for j, tile in ipairs(tile) do
+            if tile.name == "water" or tile.name == "dirt_separator" then
+                Player:tile_collision(tile)
+                Chicken:tile_collision(tile)
+            end
+        end
+    end
 
     Chicken:move(dt)
-    Chicken:tile_collision(Water)
     if Chicken:lay_egg(dt) then
         local egg = Chicken.produce:new(nil, Chicken.x, Chicken.y)
         table.insert(ground_items, egg)
