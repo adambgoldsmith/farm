@@ -2,6 +2,8 @@ grass = require("tiles.grass")
 water = require("tiles.water")
 dirt_separator = require("tiles.dirt_separator")
 
+-- these sprites should be in their respective classes, but for now, they are here
+
 grass_sprites = {
     love.graphics.newImage("res/grass/grass_full.png"),
     love.graphics.newImage("res/grass/grass_left.png"),
@@ -14,12 +16,12 @@ grass_sprites = {
     love.graphics.newImage("res/grass/grass_bot_left.png"),
 }
 
--- separates the bottom of the grass from the top of the water
 dirt_separator_sprite = love.graphics.newImage("res/dirt_separator.png")
 
 water_sprites = {
     love.graphics.newImage("res/water/water_full.png"),
-    love.graphics.newImage("res/water/water_top.png")
+    love.graphics.newImage("res/water/water_top.png"),
+    love.graphics.newImage("res/dock_walkway.png"),
 }
 
 island_generator = {
@@ -68,6 +70,10 @@ function island_generator:generate()
             end
         end
     end
+
+    -- pick a random spot of water in last column and set it to water_sprites[3]
+    local random_water_spot = math.random(2, self.island_size_x - 1)
+    self.island[random_water_spot][self.island_size_y] = water:new(nil, (self.island_size_y - 1) * 32, (random_water_spot - 1) * 32, water_sprites[3])
 end
 
 function island_generator.determine_grass_sprite(i, j)
