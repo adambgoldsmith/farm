@@ -102,6 +102,21 @@ function player:select_item()
     end
 end
 
+function player:select_item_scrolling(y)
+    if y > 0 then
+        self.held_item_index = self.held_item_index + 1
+        if self.held_item_index > self.inventory_size then
+            self.held_item_index = 1
+        end
+    elseif y < 0 then
+        self.held_item_index = self.held_item_index - 1
+        if self.held_item_index < 1 then
+            self.held_item_index = self.inventory_size
+        end
+    end
+    self.held_item = self.inventory[self.held_item_index]
+end
+
 function player:use_item()
     if love.keyboard.isDown("space") then
         return true

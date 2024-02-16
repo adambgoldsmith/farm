@@ -153,3 +153,7 @@ function love.update(dt)
 
     cam:lookAt(Player.x, Player.y)
 end
+
+function love.wheelmoved(x, y)
+    Player:select_item_scrolling(y)
+end
