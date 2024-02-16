@@ -30,6 +30,7 @@ function love.load()
     fence = require("fence")
     house = require("house")
     chest = require("chest")
+    caravan = require("caravan")
 
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
@@ -48,6 +49,7 @@ function love.load()
     Fence = fence:new(nil, 192, 192)
     House = house:new(nil, 256 + 96, 64)
     Chest = chest:new(nil, 256 + 64, 192)
+    Caravan = caravan:new(nil, 256 + 64, 256)
 end
 
 function love.draw()
@@ -61,6 +63,8 @@ function love.draw()
         Water:draw()
 
         House:draw()
+
+        Caravan:draw()
 
         Chest:draw()
 
