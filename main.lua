@@ -7,9 +7,10 @@ function love.load()
 
     hotbar = require("ui.hotbar")
     Hotbar = hotbar:new(nil, 0, 0)
-
     status = require("ui.status")
     Status = status:new(nil, 0, 0)
+    shop = require("ui.shop")
+    Shop = shop:new(nil, 0, 0)
 
     island_generator = require("island_generator")
     Island = island_generator:new()
@@ -49,7 +50,7 @@ function love.load()
     Fence = fence:new(nil, 192, 192)
     House = house:new(nil, 256 + 96, 64)
     Chest = chest:new(nil, 256 + 64, 192)
-    Caravan = caravan:new(nil, 256 + 64, 256)
+    Caravan = caravan:new(nil, 32, 256 + 32)
 end
 
 function love.draw()
@@ -80,6 +81,7 @@ function love.draw()
 
         Hotbar:draw(Player)
         Status:draw(Player)
+        Shop:draw(Caravan)
 
     cam:detach()
 end
@@ -91,8 +93,8 @@ function love.update(dt)
 
     Player:move(dt)
     Player:select_item()
-    for i, tile in ipairs(Island.island) do
-        for j, tile in ipairs(tile) do
+    for _, tile in ipairs(Island.island) do
+        for _, tile in ipairs(tile) do
             if tile.name == "water" or tile.name == "dirt_separator" then
                 Player:tile_collision(tile)
                 Chicken:tile_collision(tile)
@@ -105,7 +107,6 @@ function love.update(dt)
         local egg = Chicken.produce:new(nil, Chicken.x, Chicken.y)
         table.insert(ground_items, egg)
     end
-
 
     if Player:check_tile(Plot) then
         if Player:use_item() then
@@ -154,10 +155,31 @@ function love.update(dt)
 
     Hotbar:attach_to_player(Player)
     Status:attach_to_player(Player)
+    Shop:attach_to_player(Player)
 
     cam:lookAt(Player.x, Player.y)
 end
 
 function love.wheelmoved(x, y)
     Player:select_item_scrolling(y)
+end
+
+function love.keypressed(key)
+    if key == "space" then
+        if Player:check_tile(Caravan) then
+            Shop:set_is_open()
+        end
+    end
+end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        if Shop.is_open then
+            local x_pos, y_pos = cam:mousePosition()
+            local item_index = Shop:check_mouse_position(x_pos, y_pos)
+            if item_index ~= 0 then
+                Shop:buy_item(Player, Caravan.items[item_index])
+            end
+        end
+    end
 end

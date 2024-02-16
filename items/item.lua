@@ -1,10 +1,11 @@
 item = {}
 
-function item:new(o, name, type)
+function item:new(o)
     o = o or {}
-    o.name = name
-    o.type = type
+    o.name = "undefined item"
+    o.type = "undefined item"
     o.sprite = love.graphics.newImage("res/missing_texture.png")
+    o.price = 10
     setmetatable(o, self)
     self.__index = self
     return o
