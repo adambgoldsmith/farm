@@ -20,6 +20,7 @@ function love.load()
     water = require("tiles.water")
     hoe = require("items.hoe")
     watering_can = require("items.watering_can")
+    axe = require("items.axe")
     carrot_seed = require("items.carrot_seed")
     tomato_seed = require("items.tomato_seed")
     cabbage_seed = require("items.cabbage_seed")
@@ -33,6 +34,7 @@ function love.load()
     ground_items = {
         cabbage_seed:new(nil, 256, 256),
         cabbage_seed:new(nil, 288, 256),
+        axe:new(nil, 320, 256),
     }
 
     Player = player:new(nil, 128, 128)
