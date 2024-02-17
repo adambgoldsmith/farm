@@ -22,6 +22,7 @@ function love.load()
     hoe = require("items.hoe")
     watering_can = require("items.watering_can")
     axe = require("items.axe")
+    fishing_rod = require("items.fishing_rod")
     carrot_seed = require("items.carrot_seed")
     tomato_seed = require("items.tomato_seed")
     cabbage_seed = require("items.cabbage_seed")
@@ -37,6 +38,7 @@ function love.load()
         cabbage_seed:new(nil, 256, 256),
         cabbage_seed:new(nil, 288, 256),
         axe:new(nil, 320, 256),
+        fishing_rod:new(nil, 352, 256),
     }
 
     Player = player:new(nil, 128, 128)
@@ -81,7 +83,7 @@ function love.draw()
 
         Hotbar:draw(Player)
         Status:draw(Player)
-        Shop:draw(Caravan)
+        Shop:draw(Caravan, cam)
 
     cam:detach()
 end
@@ -155,7 +157,7 @@ function love.update(dt)
 
     Hotbar:attach_to_player(Player)
     Status:attach_to_player(Player)
-    Shop:attach_to_player(Player)
+    Shop:attach_to_shop(Caravan)
 
     cam:lookAt(Player.x, Player.y)
 end
@@ -175,8 +177,7 @@ end
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
         if Shop.is_open then
-            local x_pos, y_pos = cam:mousePosition()
-            local item_index = Shop:check_mouse_position(x_pos, y_pos)
+            local item_index = Shop:check_mouse_position(cam)
             if item_index ~= 0 then
                 Shop:buy_item(Player, Caravan.items[item_index])
             end

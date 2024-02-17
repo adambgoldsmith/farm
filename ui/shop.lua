@@ -31,6 +31,8 @@ end
 function shop:draw(selected_shop)
     if self.is_open then
         self:display_shop(selected_shop)
+        Selected = self:check_mouse_position(cam)
+        self:display_item_info(Caravan, Selected, cam)
     end
 end
 
@@ -46,14 +48,31 @@ function shop:display_shop(selected_shop)
         end
         if selected_shop.items[i] ~= "nothing" then
             love.graphics.draw(selected_shop.items[i]:new().sprite, self.x + box.x, self.y + box.y)
-            love.graphics.print(selected_shop.items[i]:new().name, self.x + box.x, self.y + box.y + 32)
-            love.graphics.print(selected_shop.items[i]:new().price, self.x + box.x, self.y + box.y + 48)
         end
         love.graphics.setColor(1, 1, 1)
     end
 end
 
-function shop:check_mouse_position(x_pos, y_pos)
+function shop:display_item_info(selected_shop, selected_item, cam)
+    local x_pos, y_pos = cam:mousePosition()
+    if selected_item ~= 0 and selected_shop.items[selected_item] ~= "nothing" then
+        love.mouse.setVisible(false)
+        love.graphics.setColor(0.5, 0.5, 0.5)
+        love.graphics.rectangle("fill", x_pos, y_pos, 128, 64)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle("line", x_pos, y_pos, 128, 64)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.print(selected_shop.items[selected_item]:new().name, x_pos + 4, y_pos + 4)
+        love.graphics.print(selected_shop.items[selected_item]:new().price, x_pos + 4, y_pos + 24)
+        love.graphics.setColor(1, 1, 1)
+    else    
+        love.mouse.setVisible(true)
+    end
+end
+
+
+function shop:check_mouse_position(cam)
+    local x_pos, y_pos = cam:mousePosition()
     for i, box in ipairs(self.boxes) do
         if x_pos > self.x + box.x and x_pos < self.x + box.x + 32 and y_pos > self.y + box.y and y_pos < self.y + box.y + 32 then
             return i
@@ -81,9 +100,9 @@ function shop:set_is_open()
     self.is_open = not self.is_open
 end
 
-function shop:attach_to_player(player)
-    self.x = player.x - 32
-    self.y = player.y - 196
+function shop:attach_to_shop(selected_shop)
+    self.x = selected_shop.x + 16
+    self.y = selected_shop.y - 96
 end
 
 return shop
