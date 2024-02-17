@@ -28,6 +28,9 @@ function player:draw()
     else
         love.graphics.draw(self.sprite, self.x + 32, self.y, 0, -2, 2, 0, 0)
     end
+    if type(self.held_item) == "table" then
+        love.graphics.draw(self.held_item.sprite, self.x + 20, self.y + 12)
+    end
 end
 
 function player:move(dt)
