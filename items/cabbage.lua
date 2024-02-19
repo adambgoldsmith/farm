@@ -1,17 +1,16 @@
-item = require("items.item")
+Class = require("class")
+Item = require("items.item")
 
-cabbage = item:new()
+Cabbage = Class {
+    __includes = Item,
+    init = function(self, x, y)
+        Item.init(self)
+        self.pos = {x = x, y = y}
+        self.size = {w = 32, h = 32}
+        self.name = "cabbage"
+        self.type = "produce"
+        self.img = love.graphics.newImage("res/cabbage.png")
+    end
+}
 
-function cabbage:new(o, x, y)
-    o = o or item:new(o, x, y)
-    o.x = x
-    o.y = y
-    o.name = "cabbage"
-    o.type = "produce"
-    o.sprite = love.graphics.newImage("res/cabbage.png")
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
-return cabbage
+return Cabbage

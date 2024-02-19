@@ -1,17 +1,16 @@
-item = require("items.item")
+Class = require("class")
+Item = require("items.item")
 
-fishing_rod = item:new()
+FishingRod = Class {
+    __includes = Item,
+    init = function(self, x, y)
+        Item.init(self)
+        self.name = "fishing_rod"
+        self.type = "tool"
+        self.pos = {x = x, y = y}
+        self.size = {w = 32, h = 32}
+        self.img = love.graphics.newImage("res/fishing_rod.png")
+    end,
+}
 
-function fishing_rod:new(o, x, y)
-    o = o or item:new(o, x, y)
-    o.x = x
-    o.y = y
-    o.name = "fishing_rod"
-    o.type = "tool"
-    o.sprite = love.graphics.newImage("res/fishing_rod.png")
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
-return fishing_rod
+return FishingRod

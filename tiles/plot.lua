@@ -1,82 +1,100 @@
-plot = {
-    x = 0,
-    y = 0,
-    name = "plot",
-    type = "tile",
-    sprite = {
-        plot = love.graphics.newImage("res/missing_texture.png"),
-        plot_tilled = love.graphics.newImage("res/missing_texture.png"),
-        plot_water = love.graphics.newImage("res/missing_texture.png"),
-    },
-    is_tilled = false,
-    is_seeded = false,
-    is_watered = false,
-    is_grown = false,
-    is_dead = false,
-    death_chance = 0.1,
-    growth = 0,
-    seed = nil,
-}
+Class = require("class")
+Tile = require("tiles.tile")
 
-function plot:new(o, x, y)
-    o = o or {}
-    o.x = x or 0
-    o.y = y or 0
-    o.sprite = {
-        plot = love.graphics.newImage("res/plot.png"),
-        plot_tilled = love.graphics.newImage("res/plot_tilled.png"),
-        plot_water = love.graphics.newImage("res/plot_water.png"),
-    }
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
-function plot:draw()
-    if not self.is_tilled then
-        love.graphics.draw(self.sprite.plot, self.x, self.y)
-    else
-        love.graphics.draw(self.sprite.plot_tilled, self.x, self.y)
-    end
-    if self.is_watered then
-        love.graphics.draw(self.sprite.plot_water, self.x, self.y)
-    end
-    if self.is_seeded then
-        love.graphics.draw(self.seed.sprite, self.x, self.y)
-    end
-end
-
-function plot:till()
-    self.is_tilled = true
-end
-
-function plot:plant_seed(seed)
-    self.seed = seed
-    self.is_seeded = true
-end
-
-function plot:water()
-    self.is_watered = true
-    self.death_chance = self.death_chance / 2
-end
-
-function plot:grow()
-    if self.is_seeded then
-        self.growth = self.growth + 1
-    end
-end
-
-function plot:harvest()
-    if self.growth >= self.seed.growth_time then
+Plot = Class {
+    __includes = Tile,
+    init = function(self, x, y)
+        Tile.init(self)
+        self.pos = {x = x, y = y}
+        self.size = {w = 32, h = 32}
+        self.name = "plot"
+        self.type = "tile"
+        self.img = love.graphics.newImage("res/plot.png")
         self.is_tilled = false
         self.is_seeded = false
         self.is_watered = false
-        self.growth = 0
-        produce = self.seed.produce
+        self.is_grown = false
+        self.death_chance = 0.1
+        self.growth_stage = 0
         self.seed = nil
-        return produce:new()
-    end
-    return "nothing"
-end
+    end,
 
-return plot
+    draw = function(self)
+        love.graphics.draw(self.img, self.pos.x, self.pos.y)
+        if self.is_watered then
+            love.graphics.draw(love.graphics.newImage("res/plot_water.png"), self.pos.x, self.pos.y)
+        end
+        if self.is_seeded then
+            love.graphics.draw(self.seed.img, self.pos.x, self.pos.y)
+        end
+    end,
+
+    interact = function(self, player)
+        print("interacting with plot")
+        if player.held_item ~= nil then
+            if player.held_item.name == "hoe" then
+                self.till(self)
+            elseif player.held_item.name == "watering_can" then
+                self.water(self)
+            elseif player.held_item.type == "seed" then
+                self.plant_seed(self, player.held_item)
+                player:delete_item(player.held_item)
+            end
+        else 
+            local produce = self.harvest(self)
+            if produce ~= nil then
+                table.insert(ground_items, produce)
+            end
+        end
+    end,
+
+    till = function(self)
+        if not self.is_tilled then
+            self.is_tilled = true
+            self.img = love.graphics.newImage("res/plot_tilled.png")
+        end
+    end,
+
+    water = function(self)
+        if self.is_tilled and not self.is_watered then
+            self.is_watered = true
+        end
+    end,
+
+    plant_seed = function(self, seed)
+        if self.is_tilled and not self.is_seeded then
+            self.is_seeded = true
+            self.seed = seed
+        end
+    end,
+
+    grow = function(self)
+        if self.is_seeded and not self.is_grown then
+            if math.random() < self.death_chance then
+                self.is_seeded = false
+                self.seed = nil
+            else
+                self.growth_stage = self.growth_stage + 1
+                if self.growth_stage == self.seed.growth_time then
+                    self.is_grown = true
+                end
+            end
+        end
+    end,
+
+    harvest = function(self)
+        if self.is_grown then
+            self.is_grown = false
+            self.is_seeded = false
+            self.is_watered = false
+            self.is_tilled = false
+            self.img = love.graphics.newImage("res/plot.png")
+            local produce = self.seed.produce(self.pos.x, self.pos.y)
+            self.seed = nil
+            return produce
+        end
+        return nil
+    end
+}
+
+return Plot

@@ -1,28 +1,24 @@
-item = {}
+Class = require("class")
+GameObject = require("game_object")
 
-function item:new(o)
-    o = o or {}
-    o.name = "undefined item"
-    o.type = "undefined item"
-    o.sprite = love.graphics.newImage("res/missing_texture.png")
-    o.price = 10
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
+Item = Class {
+    __includes = GameObject,
+    init = function(self)
+        GameObject.init(self)
+        self.name = "item"
+        self.type = "item"
+        self.img = love.graphics.newImage("res/missing_texture.png")
+        self.price = 10
+    end,
 
-function item:draw()
-    love.graphics.draw(self.sprite, self.x, self.y)
-end
+    bob = function(self)
+        self.pos.y = self.pos.y + math.sin(love.timer.getTime() * 2) * 0.1
+    end,
 
-function item:float()
-    
-    self.y = self.y + math.sin(love.timer.getTime() * 2) * 0.1
-end
+    update_pos = function(self, pos)
+        self.pos.x = pos.x
+        self.pos.y = pos.y
+    end,
+}
 
-function item:drop(x, y)
-    self.x = x
-    self.y = y
-end
-
-return item
+return Item

@@ -1,20 +1,19 @@
-item = require("items.item")
-carrot = require("items.carrot")
+Class = require("class")
+Item = require("items.item")
+Carrot = require("items.carrot")
 
-carrot_seed = item:new()
+CarrotSeed = Class {
+    __includes = Item,
+    init = function(self, x, y)
+        Item.init(self)
+        self.pos = {x = x, y = y}
+        self.size = {w = 32, h = 32}
+        self.name = "carrot_seed"
+        self.type = "seed"
+        self.img = love.graphics.newImage("res/carrot_seed.png")
+        self.growth_time = 5
+        self.produce = Carrot
+    end
+}
 
-function carrot_seed:new(o, x, y)
-    o = o or item:new(o, x, y)
-    o.x = x
-    o.y = y
-    o.name = "carrot seed"
-    o.type = "seed"
-    o.sprite = love.graphics.newImage("res/carrot_seed.png")
-    o.growth_time = 10
-    o.produce = carrot
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
-return carrot_seed
+return CarrotSeed
