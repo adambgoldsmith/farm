@@ -25,7 +25,7 @@ Caravan = Class {
         }
     end,
 
-    interact = function(self, player)
+    interact = function(self)
         self.is_open = not self.is_open
     end,
 }

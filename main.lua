@@ -7,8 +7,12 @@ Camera = require("libraries.camera")
 Inventory = require("ui.inventory")
 Status = require("ui.status")
 Shop = require("ui.shop")
+Storage = require("ui.storage")
+
 Player = require("entities.player")
 Chicken = require("entities.chicken")
+Mask = require("entities.mask")
+
 FishingRod = require("items.fishing_rod")
 Axe = require("items.axe")
 Hoe = require("items.hoe")
@@ -29,13 +33,17 @@ Plot = require("tiles.plot")
 Tree = require("tree")
 
 function love.load()
+    
     camera = Camera()
     inventory = Inventory()
     status = Status()
     shop = Shop()
+    storage = Storage()
 
     player = Player(100, 100)
     chicken = Chicken(200, 200)
+    mask = Mask(500, 500)
+
     fishing_rod = FishingRod(128, 128)
     axe = Axe(160, 128)
     flute = Flute(192, 128)
@@ -82,7 +90,8 @@ function love.load()
     }
 
     structures = {
-        caravan
+        caravan,
+        chest
     }
 
     love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
@@ -113,10 +122,12 @@ function love.draw()
     end
 
     player:draw()
+    mask:draw()
 
     inventory:draw(player, camera)
     status:draw(player)
     shop:draw(caravan, camera)
+    storage:draw(chest, camera)
 
     camera:detach()
 end
@@ -124,6 +135,8 @@ end
 function love.update(dt)
     player:move(dt)
     player:select_item()
+
+    mask:update(dt, player)
 
     chicken:move(dt)
     if chicken:ready_to_lay_egg(dt) then

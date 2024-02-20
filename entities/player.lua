@@ -13,6 +13,8 @@ Player = Class {
         self.type = "entity"
         self.speed = 150
         self.direction = 1
+        self.health = 100
+        self.max_health = 100
         self.inventory_size = 12
         self.inventory = {}
         self.hotbar_size = 5
@@ -110,7 +112,18 @@ Player = Class {
         if self:check_collision(other) then
             print("Interacting with " .. other.name)
         end
-    end
+    end,
+
+    heal = function(self, health)
+        self.health = self.health + health
+        if self.health > self.max_health then
+            self.health = self.max_health
+        end
+    end,
+
+    take_damage = function(self, damage)
+        self.health = self.health - damage
+    end,
 }
 
 return Player

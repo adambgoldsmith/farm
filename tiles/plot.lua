@@ -37,8 +37,7 @@ Plot = Class {
             elseif player.held_item.name == "watering_can" then
                 self.water(self)
             elseif player.held_item.type == "seed" then
-                self.plant_seed(self, player.held_item)
-                player:delete_item(player.held_item)
+                self.plant_seed(self, player)
             end
         else 
             local produce = self.harvest(self)
@@ -61,10 +60,11 @@ Plot = Class {
         end
     end,
 
-    plant_seed = function(self, seed)
+    plant_seed = function(self, player)
         if self.is_tilled and not self.is_seeded then
             self.is_seeded = true
-            self.seed = seed
+            self.seed = player.held_item
+            player:delete_item(player.held_item)
         end
     end,
 
@@ -73,6 +73,8 @@ Plot = Class {
             if math.random() < self.death_chance then
                 self.is_seeded = false
                 self.seed = nil
+                self.is_watered = false
+                self.is_tilled = false
             else
                 self.growth_stage = self.growth_stage + 1
                 if self.growth_stage == self.seed.growth_time then

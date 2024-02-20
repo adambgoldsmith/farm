@@ -13,6 +13,7 @@ Status = Class {
 
     draw = function(self, player)
         love.graphics.print("Money: " .. player.money, self.pos.x, self.pos.y)
+        love.graphics.print("Health: " .. player.health, self.pos.x, self.pos.y + 16)
     end,
 
     attach_to_player = function(self, player)

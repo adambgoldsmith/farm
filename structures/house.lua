@@ -10,6 +10,10 @@ House = Class {
         self.img = love.graphics.newImage("res/house.png")
         self.name = "house"
         self.type = "structure"
+    end,
+
+    interact = function(self, player)
+        print("You entered the house.")
     end
 }
 
