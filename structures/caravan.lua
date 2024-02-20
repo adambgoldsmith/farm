@@ -1,5 +1,6 @@
 Class = require("class")
 Structure = require("structures.structure")
+
 FishingRod = require("items.fishing_rod")
 Flute = require("items.flute")
 Axe = require("items.axe")

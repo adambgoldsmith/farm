@@ -11,6 +11,9 @@ GameObject = Class {
 
     draw = function(self)
         love.graphics.draw(self.img, self.pos.x, self.pos.y)
+    end,
+
+    update = function(self, dt)
     end
 }
 

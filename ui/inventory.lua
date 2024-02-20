@@ -80,6 +80,7 @@ Inventory = Class {
         self.pos.y = player.pos.y - self.y_offset
     end,
 
+    -- Second item should be able to be nil
     select_item = function(self, player, camera)
         if self.visible then
             local x_pos, y_pos = camera:mousePosition()

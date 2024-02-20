@@ -23,6 +23,10 @@ Tree = Class {
         love.graphics.draw(self.img, self.pos.x, self.pos.y)
     end,
 
+    update = function(self, dt)
+        self:cooldown(dt)
+    end,
+
     interact = function(self, player)
         if player.held_item ~= nil then
             if player.held_item.name == "axe" then

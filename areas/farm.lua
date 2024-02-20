@@ -1,49 +1,35 @@
-local farm = {
-    ground_items = {},
-    trees = {},
-    tiles = {},
-    structures = {}
+Class = require("class")
+Area = require("areas.area")
+
+-- Entities
+Chicken = require("entities.chicken")
+-- Trees
+Tree = require("tree")
+-- Tiles
+Plot = require("tiles.plot")
+-- Structures
+Caravan = require("structures.caravan")
+Chest = require("structures.chest")
+-- UI
+Shop = require("ui.shop")
+Storage = require("ui.storage")
+
+Farm = Class {
+    __includes = Area,
+    init = function(self)
+        Area.init(self)
+        self.name = "Farm"
+    end,
+
+    load = function(self)
+        self.add_entity(self, Chicken(100, 100))
+        self.add_tree(self, Tree(200, 200))
+        self.add_tile(self, Plot(300, 300))
+        local caravan = Caravan(400, 400)
+        self.add_structure(self, caravan)
+        self.add_structure(self, Chest(500, 500))
+        self.add_ui(self, Shop(caravan))
+    end
 }
 
-function farm:load()
-    self.ground_items = {}
-    self.trees = {}
-    self.tiles = {}
-    self.structures = {}
-end
-
-function farm:update(dt)
-    for i, item in ipairs(self.ground_items) do
-        item:bob()
-    end
-
-    for i, tree in ipairs(self.trees) do
-        tree:cooldown(dt)
-    end
-
-    if love.timer.getTime() % 1 < dt then
-        for i, tile in ipairs(self.tiles) do
-            tile:grow()
-        end
-    end
-end
-
-function farm:draw()
-    for i, item in ipairs(self.ground_items) do
-        item:draw()
-    end
-
-    for i, tree in ipairs(self.trees) do
-        tree:draw()
-    end
-
-    for i, tile in ipairs(self.tiles) do
-        tile:draw()
-    end
-
-    for i, structure in ipairs(self.structures) do
-        structure:draw()
-    end
-end
-
-return farm
+return Farm

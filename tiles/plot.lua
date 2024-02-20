@@ -29,6 +29,12 @@ Plot = Class {
         end
     end,
 
+    update = function(self, dt)
+        if love.timer.getTime() % 1 < dt then
+            self:grow()
+        end
+    end,
+
     interact = function(self, player)
         print("interacting with plot")
         if player.held_item ~= nil then
@@ -42,7 +48,7 @@ Plot = Class {
         else 
             local produce = self.harvest(self)
             if produce ~= nil then
-                table.insert(ground_items, produce)
+                player:add_item(produce)
             end
         end
     end,

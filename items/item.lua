@@ -11,6 +11,10 @@ Item = Class {
         self.price = 10
     end,
 
+    update = function(self)
+        self:bob()
+    end,
+
     bob = function(self)
         self.pos.y = self.pos.y + math.sin(love.timer.getTime() * 2) * 0.1
     end,
