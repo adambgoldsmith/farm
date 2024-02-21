@@ -13,57 +13,63 @@ FarmArea = require("areas.farm")
 PlayerHouseArea = require("areas.player_house")
 
 CAMERA = Camera()
+PLAYER = Player(400, 300)
+INVENTORY = Inventory()
+STATUS = Status()
 
-local player = Player(400, 300)
-local inventory = Inventory()
-local status = Status()
-local test_area = TestArea()
-local farm = FarmArea()
-local player_house = PlayerHouseArea()
+TEST_AREA = TestArea()
+FARM = FarmArea()
+PLAYER_HOUSE = PlayerHouseArea()
 
-local current_area
+CURRENT_AREA = TEST_AREA
 
 function love.load()
     love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
     love.graphics.setDefaultFilter("nearest", "nearest")
 
-    player:add_item(Hoe())
-    player:add_item(Axe())
+    PLAYER:add_item(Hoe())
+    PLAYER:add_item(Axe())
 
-    test_area:load()
-    farm:load()
-    player_house:load()
-
-    current_area = test_area
+    TEST_AREA:load()
+    FARM:load()
+    PLAYER_HOUSE:load()
+    cabin_indoors = love.graphics.newImage("res/cabin_indoors.png")
 end
 
 function love.draw()
     CAMERA:attach()
 
-    current_area:draw()
-    
-    player:draw()
-    inventory:draw(player, CAMERA)
-    status:draw(player)
+    CURRENT_AREA:draw()
+
+    if CURRENT_AREA == FARM then
+        love.graphics.setBackgroundColor(29/255, 112/255, 18/255)
+    elseif  CURRENT_AREA == PLAYER_HOUSE then
+        love.graphics.setBackgroundColor(0, 0, 0)
+        love.graphics.draw(cabin_indoors, 0, 0)
+    end
+
+    PLAYER:draw()
+    INVENTORY:draw(PLAYER, CAMERA)
+    STATUS:draw(PLAYER)
 
     CAMERA:detach()
 end
 
 function love.update(dt)
-    player:move(dt)
-    player:select_item()
+    PLAYER:move(dt)
+    PLAYER:select_item()
 
-    current_area:update(dt, player)
+    CURRENT_AREA:update(dt, PLAYER)
 
-    inventory:attach_to_player(player)
-    inventory:slide(dt)
-    status:attach_to_player(player)
+    INVENTORY:attach_to_player(PLAYER)
+    INVENTORY:slide(dt)
+    STATUS:attach_to_player(PLAYER)
 
-    CAMERA:lookAt(player.pos.x, player.pos.y)
+    CAMERA:lookAt(PLAYER.pos.x, PLAYER.pos.y)
 end
 
 function love.wheelmoved(x, y)
-    player:select_item_mouse_wheel(y)
+    PLAYER:select_item_mouse_wheel(y)
 end
 
 function love.keypressed(key)
@@ -71,55 +77,52 @@ function love.keypressed(key)
         love.event.quit()
     end
     if key == "i" then
-        inventory:toggle_visibility()
+        INVENTORY:toggle_visibility()
     end
     if key == "e" then
-        for i, item in ipairs(current_area.ground_items) do
-            if player:check_collision(item) then
-                if player:add_item(item) then
-                    table.remove(current_area.ground_items, i)
+        for i, item in ipairs(CURRENT_AREA.ground_items) do
+            if PLAYER:check_collision(item) then
+                if PLAYER:add_item(item) then
+                    table.remove(CURRENT_AREA.ground_items, i)
                 end
             end
         end
-        for i, tile in ipairs(current_area.tiles) do
-            if player:check_collision(tile) then
-                tile:interact(player)
+        for i, tile in ipairs(CURRENT_AREA.tiles) do
+            if PLAYER:check_collision(tile) then
+                tile:interact(PLAYER)
             end
         end
-        for i, structure in ipairs(current_area.structures) do
-            if player:check_collision(structure) then
-                structure:interact(player)
+        for i, structure in ipairs(CURRENT_AREA.structures) do
+            if PLAYER:check_collision(structure) then
+                structure:interact(PLAYER)
             end
         end
     end
     if key == "q" then
-        local item = player:drop_item()
+        local item = PLAYER:drop_item()
         if item ~= nil then
-            item:update_pos(player.pos)
-            table.insert(current_area.ground_items, item)
+            item:update_pos(PLAYER.pos)
+            table.insert(CURRENT_AREA.ground_items, item)
         end
     end
     if key == "p" then
-        load_area(farm)
-    end
-    if key == "l" then
-        load_area(player_house)
+        load_area(FARM)
     end
     if key == "o" then
-        load_area(test_area)
+        load_area(TEST_AREA)
     end
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
-        inventory:select_item(player, CAMERA)
-        current_area:click(player)
+        INVENTORY:select_item(PLAYER, CAMERA)
+        CURRENT_AREA:click(PLAYER)
     end
     if button == 2 then
-        inventory:release_item(player)
+        INVENTORY:release_item(PLAYER)
     end
 end
 
 function load_area(area)
-    current_area = area
+    CURRENT_AREA = area
 end

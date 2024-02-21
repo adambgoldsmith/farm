@@ -12,53 +12,57 @@ Area = Class {
     end,
 
     draw = function(self)
-        for i, item in ipairs(self.ground_items) do
+        for _, item in ipairs(self.ground_items) do
             item:draw()
         end
 
-        for i, tree in ipairs(self.trees) do
+        for _, tree in ipairs(self.trees) do
             tree:draw()
         end
 
-        for i, tile in ipairs(self.tiles) do
+        for _, tile in ipairs(self.tiles) do
             tile:draw()
         end
 
-        for i, structure in ipairs(self.structures) do
+        for _, structure in ipairs(self.structures) do
             structure:draw()
         end
 
-        for i, entity in ipairs(self.entities) do
+        for _, entity in ipairs(self.entities) do
             entity:draw()
         end
 
-        for i, ui in ipairs(self.ui) do
+        for _, ui in ipairs(self.ui) do
             ui:draw()
         end
     end,
 
     update = function(self, dt, player)
-        for i, item in ipairs(self.ground_items) do
-            item:update()
+        for _, item in ipairs(self.ground_items) do
+            item:update(dt)
         end
 
-        for i, tree in ipairs(self.trees) do
+        for _, tree in ipairs(self.trees) do
             tree:update(dt)
         end
 
-        for i, tile in ipairs(self.tiles) do
+        for _, tile in ipairs(self.tiles) do
             tile:update(dt)
         end
 
-        for i, entity in ipairs(self.entities) do
+        for _, entity in ipairs(self.entities) do
             entity:update(dt, player)
         end
     end,
 
     click = function(self, player)
-        for i, clickable in ipairs(self.clickables) do
+        for _, clickable in ipairs(self.clickables) do
             clickable:click(player)
         end
+    end,
+
+    add_background = function(self, background)
+        table.insert(self.backgrounds, background)
     end,
 
     add_entity = function(self, entity)
@@ -85,8 +89,15 @@ Area = Class {
         table.insert(self.ui, ui)
     end,
 
-    add_clickable = function(self, clickable)
-        table.insert(self.clickables, clickable)
+    add_clickables = function(self)
+        local tbls = {self.entities, self.ground_items, self.trees, self.tiles, self.structures, self.ui}
+        for _, tbl in ipairs(tbls) do
+            for _, object in ipairs(tbl) do
+                if object.click then
+                    table.insert(self.clickables, object)
+                end
+            end
+        end
     end
 }
 

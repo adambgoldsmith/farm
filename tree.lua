@@ -27,9 +27,9 @@ Tree = Class {
         self:cooldown(dt)
     end,
 
-    click = function(self, player)
-        if player.held_item ~= nil then
-            if player.held_item.name == "axe" then
+    click = function(self)
+        if PLAYER.held_item ~= nil then
+            if PLAYER.held_item.name == "axe" then
                 return self.hit(self)
             end
         end
@@ -47,7 +47,12 @@ Tree = Class {
             self.hit_cooldown = self.hit_cooldown_max
             if self.hits >= self.max_hits then
                 self.hits = 0
-                return self.produce(self.pos.x, self.pos.y)
+                PLAYER:add_item(self.produce())
+                for i, tree in ipairs(CURRENT_AREA.trees) do
+                    if tree == self then
+                        table.remove(CURRENT_AREA.trees, i)
+                    end
+                end
             end
         end
     end,

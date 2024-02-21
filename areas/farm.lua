@@ -32,14 +32,7 @@ Farm = Class {
         self.add_ui(self, Shop(caravan))
         self.add_ui(self, Storage(chest))
 
-        local tables = {self.entities, self.trees, self.tiles, self.structures, self.ui}
-        for _, tbl in ipairs(tables) do
-            for _, object in ipairs(tbl) do
-                if object.click then
-                    table.insert(self.clickables, object)
-                end
-            end
-        end
+        self.add_clickables(self)
     end
 }
 

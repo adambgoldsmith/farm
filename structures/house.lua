@@ -7,13 +7,13 @@ House = Class {
         Structure.init(self)
         self.pos = {x = x, y = y}
         self.size = {w = 256, h = 192}
-        self.img = love.graphics.newImage("res/house.png")
+        self.img = love.graphics.newImage("res/cabin.png")
         self.name = "house"
         self.type = "structure"
     end,
 
-    interact = function(self, player)
-        print("You entered the house.")
+    interact = function(self)
+        CURRENT_AREA = PLAYER_HOUSE
     end
 }
 
