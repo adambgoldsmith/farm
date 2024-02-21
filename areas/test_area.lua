@@ -53,7 +53,6 @@ TestArea = Class {
 
         self:add_structure(Caravan(0, 0))
         self:add_structure(House(0, 100))
-        self:add_structure(Fence(0, 200))
         self:add_structure(Chest(0, 300))
 
         self:add_tree(Tree(0, 400))

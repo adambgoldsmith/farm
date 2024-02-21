@@ -39,14 +39,14 @@ end
 function love.draw()
     CAMERA:attach()
 
-    CURRENT_AREA:draw()
-
     if CURRENT_AREA == FARM then
         love.graphics.setBackgroundColor(29/255, 112/255, 18/255)
     elseif  CURRENT_AREA == PLAYER_HOUSE then
         love.graphics.setBackgroundColor(0, 0, 0)
         love.graphics.draw(cabin_indoors, 0, 0)
     end
+
+    CURRENT_AREA:draw()
 
     PLAYER:draw()
     INVENTORY:draw(PLAYER, CAMERA)
