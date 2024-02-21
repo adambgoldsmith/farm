@@ -31,6 +31,10 @@ Shop = Class {
         end
     end,
 
+    click = function(self, player)
+        self:buy_item(player)
+    end,
+
     display_shop = function(self)
         for i, box in ipairs(self.boxes) do
             love.graphics.rectangle("line", self.shop.pos.x + box.x + 16, self.shop.pos.y + box.y - 96, 32, 32)

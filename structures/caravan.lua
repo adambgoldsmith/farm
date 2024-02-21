@@ -12,7 +12,7 @@ Caravan = Class {
     init = function(self, x, y)
         Structure.init(self)
         self.pos = {x = x, y = y}
-        self.size = {w = 256, h = 192}
+        self.size = {w = 128, h = 96}
         self.img = love.graphics.newImage("res/caravan.png")
         self.name = "caravan"
         self.type = "structure"

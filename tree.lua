@@ -27,7 +27,7 @@ Tree = Class {
         self:cooldown(dt)
     end,
 
-    interact = function(self, player)
+    click = function(self, player)
         if player.held_item ~= nil then
             if player.held_item.name == "axe" then
                 return self.hit(self)

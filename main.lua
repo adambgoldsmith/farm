@@ -28,6 +28,7 @@ function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
 
     player:add_item(Hoe())
+    player:add_item(Axe())
 
     test_area:load()
     farm:load()
@@ -104,11 +105,15 @@ function love.keypressed(key)
     if key == "l" then
         load_area(player_house)
     end
+    if key == "o" then
+        load_area(test_area)
+    end
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
         inventory:select_item(player, CAMERA)
+        current_area:click(player)
     end
     if button == 2 then
         inventory:release_item(player)

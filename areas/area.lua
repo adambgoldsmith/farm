@@ -8,6 +8,7 @@ Area = Class {
         self.tiles = {}
         self.structures = {}
         self.ui = {}
+        self.clickables = {}
     end,
 
     draw = function(self)
@@ -54,6 +55,12 @@ Area = Class {
         end
     end,
 
+    click = function(self, player)
+        for i, clickable in ipairs(self.clickables) do
+            clickable:click(player)
+        end
+    end,
+
     add_entity = function(self, entity)
         table.insert(self.entities, entity)
     end,
@@ -76,6 +83,10 @@ Area = Class {
 
     add_ui = function(self, ui)
         table.insert(self.ui, ui)
+    end,
+
+    add_clickable = function(self, clickable)
+        table.insert(self.clickables, clickable)
     end
 }
 

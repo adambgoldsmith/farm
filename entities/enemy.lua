@@ -16,11 +16,20 @@ Enemy = Class {
         self.target = nil
     end,
 
+    update = function(self, dt, player)
+        self:scan_for_target(player)
+        self:chase_target(dt)
+        self:lose_target()
+        if self.target then
+            self:sicko_mode(dt)
+        end
+    end,
+
     -- Original wander method. Saving for a special occasion.
-    -- sicko_mode = function(self, dt)
-    --     self.pos.x = self.pos.x + (math.random(0, 1) * 2 - 1) * self.speed * dt
-    --     self.pos.y = self.pos.y + (math.random(0, 1) * 2 - 1) * self.speed * dt
-    -- end,
+    sicko_mode = function(self, dt)
+        self.pos.x = self.pos.x + (math.random(0, 1) * 2 - 1) * self.speed * dt
+        self.pos.y = self.pos.y + (math.random(0, 1) * 2 - 1) * self.speed * dt
+    end,
 
     chase_target = function(self, dt)
         if self.target then
@@ -78,12 +87,6 @@ Enemy = Class {
                 self.target = nil
             end
         end
-    end,
-
-    update = function(self, dt, player)
-        self:scan_for_target(player)
-        self:chase_target(dt)
-        self:lose_target()
     end
 }
 

@@ -27,8 +27,19 @@ Farm = Class {
         self.add_tile(self, Plot(300, 300))
         local caravan = Caravan(400, 400)
         self.add_structure(self, caravan)
-        self.add_structure(self, Chest(500, 500))
+        local chest = Chest(500, 500)
+        self.add_structure(self, chest)
         self.add_ui(self, Shop(caravan))
+        self.add_ui(self, Storage(chest))
+
+        local tables = {self.entities, self.trees, self.tiles, self.structures, self.ui}
+        for _, tbl in ipairs(tables) do
+            for _, object in ipairs(tbl) do
+                if object.click then
+                    table.insert(self.clickables, object)
+                end
+            end
+        end
     end
 }
 
