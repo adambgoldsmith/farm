@@ -1,5 +1,6 @@
 Class = require("class")
 Structure = require("structures.structure")
+Collidable = require("collidable")
 
 FishingRod = require("items.fishing_rod")
 Flute = require("items.flute")
@@ -8,9 +9,10 @@ Sword = require("items.sword")
 Logs = require("items.logs")
 
 Caravan = Class {
-    __includes = Structure,
+    __includes = {Structure, Collidable},
     init = function(self, x, y)
         Structure.init(self)
+        Collidable.init(self)
         self.pos = {x = x, y = y}
         self.size = {w = 128, h = 96}
         self.img = love.graphics.newImage("res/caravan.png")

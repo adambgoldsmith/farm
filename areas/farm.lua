@@ -22,13 +22,13 @@ Farm = Class {
     end,
 
     load = function(self)
-        self.add_entity(self, Chicken(100, 100))
-        self.add_tree(self, Tree(200, 200))
-        self.add_tile(self, Plot(300, 300))
+        self.add_level_object(self, Chicken(100, 100))
+        self.add_level_object(self, Tree(200, 200))
+        self.add_level_object(self, Plot(300, 300))
         local caravan = Caravan(400, 400)
-        self.add_structure(self, caravan)
+        self.add_level_object(self, caravan)
         local chest = Chest(500, 500)
-        self.add_structure(self, chest)
+        self.add_level_object(self, chest)
         self.add_ui(self, Shop(caravan))
         self.add_ui(self, Storage(chest))
 

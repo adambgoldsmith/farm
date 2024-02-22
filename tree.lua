@@ -9,7 +9,7 @@ Tree = Class {
         self.name = "tree"
         self.type = "tree"
         self.pos = {x = x, y = y}
-        self.size = {w = 32, h = 32}
+        self.size = {w = 64, h = 96}
         self.img = love.graphics.newImage("res/tree.png")
         self.produce = Logs
         self.hits = 0
@@ -48,9 +48,9 @@ Tree = Class {
             if self.hits >= self.max_hits then
                 self.hits = 0
                 PLAYER:add_item(self.produce())
-                for i, tree in ipairs(CURRENT_AREA.trees) do
+                for i, tree in ipairs(CURRENT_AREA.level_objects) do
                     if tree == self then
-                        table.remove(CURRENT_AREA.trees, i)
+                        table.remove(CURRENT_AREA.level_objects, i)
                     end
                 end
             end

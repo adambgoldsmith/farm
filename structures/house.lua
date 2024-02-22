@@ -14,6 +14,10 @@ House = Class {
         self.type = "structure"
     end,
 
+    draw = function(self)
+        love.graphics.draw(self.img, self.pos.x, self.pos.y)
+    end,
+
     interact = function(self)
         CURRENT_AREA = PLAYER_HOUSE
     end

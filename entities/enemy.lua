@@ -16,8 +16,8 @@ Enemy = Class {
         self.target = nil
     end,
 
-    update = function(self, dt, player)
-        self:scan_for_target(player)
+    update = function(self, dt)
+        self:scan_for_target()
         self:chase_target(dt)
         self:lose_target()
         if self.target then
@@ -65,12 +65,12 @@ Enemy = Class {
         self.pos.y = -100
     end,
 
-    scan_for_target = function(self, player)
-        local dx = player.pos.x - self.pos.x
-        local dy = player.pos.y - self.pos.y
+    scan_for_target = function(self)
+        local dx = PLAYER.pos.x - self.pos.x
+        local dy = PLAYER.pos.y - self.pos.y
         local distance = math.sqrt(dx * dx + dy * dy)
         if distance < 200 then
-            self:set_target(player)
+            self:set_target(PLAYER)
         end
     end,
 

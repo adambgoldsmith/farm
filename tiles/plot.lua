@@ -35,20 +35,20 @@ Plot = Class {
         end
     end,
 
-    interact = function(self, player)
+    interact = function(self)
         print("interacting with plot")
-        if player.held_item ~= nil then
-            if player.held_item.name == "hoe" then
+        if PLAYER.held_item ~= nil then
+            if PLAYER.held_item.name == "hoe" then
                 self.till(self)
-            elseif player.held_item.name == "watering_can" then
+            elseif PLAYER.held_item.name == "watering_can" then
                 self.water(self)
-            elseif player.held_item.type == "seed" then
-                self.plant_seed(self, player)
+            elseif PLAYER.held_item.type == "seed" then
+                self.plant_seed(self, PLAYER)
             end
         else 
             local produce = self.harvest(self)
             if produce ~= nil then
-                player:add_item(produce)
+                PLAYER:add_item(produce)
             end
         end
     end,

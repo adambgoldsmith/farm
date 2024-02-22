@@ -12,8 +12,8 @@ PlayerHouse = Class {
     end,
 
     load = function(self)
-        self:add_structure(Bed(192, 32))
-        self:add_structure(Door(32, 192, TEST_AREA))
+        self:add_level_object(Bed(192, 32))
+        self:add_level_object(Door(32, 192, TEST_AREA))
     end
 }
 

@@ -48,9 +48,8 @@ function love.draw()
         love.graphics.draw(cabin_indoors, 0, 0)
     end
 
-    CURRENT_AREA:draw()
+    CURRENT_AREA:draw(PLAYER)
 
-    PLAYER:draw()
     INVENTORY:draw(PLAYER, CAMERA)
     STATUS:draw(PLAYER)
 
@@ -61,9 +60,9 @@ function love.update(dt)
     PLAYER:move(dt)
     PLAYER:select_item()
     
-    for i, structure in ipairs(CURRENT_AREA.structures) do
-        if structure.collidable then
-            PLAYER:collide(structure)
+    for i, object in ipairs(CURRENT_AREA.level_objects) do
+        if object.collidable then
+            PLAYER:collide(object)
         end
     end
 
@@ -88,21 +87,12 @@ function love.keypressed(key)
         INVENTORY:toggle_visibility()
     end
     if key == "e" then
-        for i, item in ipairs(CURRENT_AREA.ground_items) do
-            if PLAYER:check_collision(item) then
-                if PLAYER:add_item(item) then
-                    table.remove(CURRENT_AREA.ground_items, i)
+        for i, item in ipairs(CURRENT_AREA.level_objects) do
+            if PLAYER:check_collision(item) and item.interact then
+                local res = item:interact()
+                if item.bob and res then
+                    table.remove(CURRENT_AREA.level_objects, i)
                 end
-            end
-        end
-        for i, tile in ipairs(CURRENT_AREA.tiles) do
-            if PLAYER:check_collision(tile) then
-                tile:interact(PLAYER)
-            end
-        end
-        for i, structure in ipairs(CURRENT_AREA.structures) do
-            if PLAYER:check_collision(structure) then
-                structure:interact(PLAYER)
             end
         end
     end
@@ -110,7 +100,7 @@ function love.keypressed(key)
         local item = PLAYER:drop_item()
         if item ~= nil then
             item:update_pos(PLAYER.pos)
-            table.insert(CURRENT_AREA.ground_items, item)
+            table.insert(CURRENT_AREA.level_objects, item)
         end
     end
     if key == "p" then

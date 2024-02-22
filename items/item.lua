@@ -15,6 +15,10 @@ Item = Class {
         self:bob()
     end,
 
+    interact = function(self)
+        return PLAYER:add_item(self)
+    end,
+
     bob = function(self)
         self.pos.y = self.pos.y + math.sin(love.timer.getTime() * 2) * 0.1
     end,
