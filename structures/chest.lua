@@ -1,12 +1,14 @@
 Class = require("class")
 Structure = require("structures.structure")
+Collidable = require("collidable")
 
 Tomato = require("items.tomato")
 
 Chest = Class {
-    __includes = Structure,
+    __includes = {Structure, Collidable},
     init = function(self, x, y)
         Structure.init(self)
+        Collidable.init(self)
         self.name = "chest"
         self.type = "structure"
         self.pos = {x = x, y = y}

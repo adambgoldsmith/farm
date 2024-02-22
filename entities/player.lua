@@ -7,8 +7,8 @@ Player = Class {
     init = function(self, x, y)
         Entity.init(self)
         self.pos = {x = x, y = y}
-        self.size = {w = 32, h = 32}
-        self.img = love.graphics.newImage("res/char_32x32.png")
+        self.size = {w = 24, h = 32}
+        self.img = love.graphics.newImage("res/char.png")
         self.name = "player"
         self.type = "entity"
         self.speed = 150

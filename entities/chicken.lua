@@ -25,6 +25,11 @@ Chicken = Class {
         end
     end,
 
+    update = function(self, dt)
+        self:move(dt)
+        self:ready_to_lay_egg(dt)
+    end,
+
     move = function(self, dt)
         -- TODO: Add 8-way movement
         if love.timer.getTime() % math.random(3, 4) < dt then
@@ -42,7 +47,7 @@ Chicken = Class {
     end,
 
     ready_to_lay_egg = function(self, dt)
-        return love.timer.getTime() % math.random(5, 10) < dt
+        return love.timer.getTime() % math.random(100, 120) < dt
     end,
 
     lay_egg = function(self)

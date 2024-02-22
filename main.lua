@@ -39,7 +39,9 @@ end
 function love.draw()
     CAMERA:attach()
 
-    if CURRENT_AREA == FARM then
+    if CURRENT_AREA == TEST_AREA then
+        love.graphics.setBackgroundColor(29/255, 112/255, 18/255)
+    elseif CURRENT_AREA == FARM then
         love.graphics.setBackgroundColor(29/255, 112/255, 18/255)
     elseif  CURRENT_AREA == PLAYER_HOUSE then
         love.graphics.setBackgroundColor(0, 0, 0)
@@ -58,6 +60,12 @@ end
 function love.update(dt)
     PLAYER:move(dt)
     PLAYER:select_item()
+    
+    for i, structure in ipairs(CURRENT_AREA.structures) do
+        if structure.collidable then
+            PLAYER:collide(structure)
+        end
+    end
 
     CURRENT_AREA:update(dt, PLAYER)
 
