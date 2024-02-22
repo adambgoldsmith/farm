@@ -7,6 +7,7 @@ GameObject = Class {
         self.img = love.graphics.newImage("res/missing_texture.png")
         self.name = "GameObject"
         self.type = "GameObject"
+        self.z_index = 0
     end,
 
     draw = function(self)
